@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// import { useGetGlobalContext } from "../../../core/context/Context";
 
 const Header: FC = () => {
+  // const { setProfile } = useGetGlobalContext();
   const nav = useNavigate();
   const exit: () => void = () => {
     nav("/");
