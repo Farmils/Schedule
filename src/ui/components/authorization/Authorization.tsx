@@ -24,8 +24,8 @@ const Authorization: FC = () => {
       setProfile(response.data);
       nav("/schedule");
     } catch (e) {
-      console.warn(e)
-]    }
+      console.warn(e);
+}
   };
   return (
       <div className={"flex flex-col items-center m-5"}>
