@@ -1,14 +1,18 @@
-import { FC, useEffect } from "react";
+import {FC, useEffect} from "react";
+import {useGetGlobalContext} from "../../../core/context/Context.tsx";
+import {getSchedule} from "../../../core/api/login-api.ts";
 
 const ScheduleTable: FC = () => {
-  const day = new Date().getDate();
-  const dayInWeek = new Date().getDay();
+  const {setSchedule,schedule} = useGetGlobalContext()
+
   useEffect(() => {
-    (async () => {
-      console.log(dayInWeek);
-    })();
-  }, []);
-  return (
+    (async ()=>{
+      const response = await getSchedule()
+      console.log(response.data)
+      setSchedule(response.data)
+    })()
+  }, [setSchedule]);
+  return(
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left rtl:text-right text-white dark:text-white">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">

@@ -1,10 +1,10 @@
 type ContextType = {
   profile: ProfileData;
   setProfile: (profile: ProfileData) => void;
+  schedule:Schedule;
+  setSchedule: (schedule: Schedule) => void;
 };
-type User = {
-  user: UserData;
-};
+
 type Token = {
   token: string;
 };
@@ -36,7 +36,17 @@ type Role = {
   id: number;
   name: string;
 };
-
+type Schedule={
+  id: number;
+  lessonNumber: number;
+  audience: string;
+  subject:Subject;
+  dayOfWeek: number;
+}
+type Subject={
+  id: number;
+  name: string;
+}
 export type {
   Role,
   ContextType,
@@ -45,6 +55,6 @@ export type {
   Responsible,
   ResponsibleType,
   Token,
-  User,
   UserData,
+  Schedule
 };
