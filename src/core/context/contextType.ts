@@ -1,8 +1,20 @@
 type ContextType = {
   profile: ProfileData;
   setProfile: (profile: ProfileData) => void;
-  schedule:Schedule;
-  setSchedule: (schedule: Schedule) => void;
+  schedule: Schedule[];
+  setSchedule: (schedule: Schedule[]) => void;
+  monday: Schedule[];
+  setMonday: (monday: Schedule[]) => void;
+  tuesday: Schedule[];
+  setTuesday: (tuesday: Schedule[]) => void;
+  wednesday: Schedule[];
+  setWednesday: (wednesday: Schedule[]) => void;
+  thursday: Schedule[];
+  setThursday: (thursday: Schedule[]) => void;
+  friday: Schedule[];
+  setFriday: (friday: Schedule[]) => void;
+  saturday: Schedule[];
+  setSaturday: (saturday: Schedule[]) => void;
 };
 
 type Token = {
@@ -36,17 +48,17 @@ type Role = {
   id: number;
   name: string;
 };
-type Schedule={
+type Schedule = {
   id: number;
   lessonNumber: number;
   audience: string;
-  subject:Subject;
+  subject: Subject;
   dayOfWeek: number;
-}
-type Subject={
+};
+type Subject = {
   id: number;
   name: string;
-}
+};
 export type {
   Role,
   ContextType,
@@ -56,5 +68,5 @@ export type {
   ResponsibleType,
   Token,
   UserData,
-  Schedule
+  Schedule,
 };

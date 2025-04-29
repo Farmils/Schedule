@@ -1,122 +1,162 @@
-import {FC, useEffect} from "react";
-import {useGetGlobalContext} from "../../../core/context/Context.tsx";
-import {getSchedule} from "../../../core/api/login-api.ts";
+import { FC, useEffect } from "react";
+import { useGetGlobalContext } from "../../../core/context/Context.tsx";
+import { getSchedule } from "../../../core/api/login-api.ts";
 
 const ScheduleTable: FC = () => {
-  const {setSchedule,schedule} = useGetGlobalContext()
+  const {
+    setSchedule,
+    schedule,
+    monday,
+    setMonday,
+    tuesday,
+    setTuesday,
+    wednesday,
+    setWednesday,
+    thursday,
+    setThursday,
+    friday,
+    setFriday,
+    saturday,
+    setSaturday,
+  } = useGetGlobalContext();
 
+  const arrayNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
+  const arrayStr: string[] = [
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
+  ];
+  const replaceMon = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 1);
+    setMonday(arr);
+    return arr;
+  };
+  const replaceTues = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 2);
+    setTuesday(arr);
+    return arr;
+  };
+  const replaceWen = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 3);
+    setWednesday(arr);
+    return arr;
+  };
+  const replaceThur = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 4);
+    setThursday(arr);
+    return arr;
+  };
+  const replaceFri = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 5);
+    setFriday(arr);
+    return arr;
+  };
+  const replaceSatur = () => {
+    const arr = schedule.filter((value) => value.dayOfWeek === 6);
+    setSaturday(arr);
+    return arr;
+  };
   useEffect(() => {
-    (async ()=>{
-      const response = await getSchedule()
-      console.log(response.data)
-      setSchedule(response.data)
-    })()
+    (async () => {
+      const response = await getSchedule();
+      console.log(response.data);
+      setSchedule(response.data);
+      replaceMon();
+      replaceTues();
+      replaceWen();
+      replaceThur();
+      replaceFri();
+      replaceSatur();
+    })();
   }, [setSchedule]);
-  return(
-    <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-white dark:text-white">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+  return (
+    <div className={"relative overflow-x-auto"}>
+      <table className={"w-4xl text-sm text-left rtl:text-right text-white"}>
+        <thead className={"bg-amber-400 "}>
           <tr>
-            <th scope="col" className="px-6 py-3">
-              <p>Понедельник</p>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <p>Вторник</p>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <p>Среда</p>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <p>Четверг</p>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <p>Пятница</p>
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <p>Суббота</p>
-            </th>
+            <td></td>
+            <td> {arrayStr[0]}</td>
+            <td> {arrayStr[1]}</td>
+            <td> {arrayStr[2]}</td>
+            <td> {arrayStr[3]}</td>
+            <td> {arrayStr[4]}</td>
+            <td> {arrayStr[5]}</td>
+            <td> {arrayStr[6]}</td>
+            <td> {arrayStr[7]}</td>
           </tr>
         </thead>
-        <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              1
-            </th>
+
+        <tbody
+          className={
+            "bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+          }
+        >
+          <tr>
+            <td>{arrayNum[0]}</td>
+            {monday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              2
-            </th>
+          <tr>
+            <td>{arrayNum[1]}</td>
+            {tuesday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              3
-            </th>
+          <tr>
+            <td>{arrayNum[2]}</td>
+            {wednesday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              4
-            </th>
+          <tr>
+            <td>{arrayNum[3]}</td>
+            {thursday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              5
-            </th>
+          <tr>
+            <td>{arrayNum[4]}</td>
+            {friday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              6
-            </th>
+          <tr>
+            <td>{arrayNum[5]}</td>
+            {saturday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              7
-            </th>
+          <tr>
+            <td>{arrayNum[6]}</td>
+            {saturday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              8
-            </th>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              9
-            </th>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-            <th
-              scope="col"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              10
-            </th>
+          <tr>
+            <td>{arrayNum[7]}</td>
+            {saturday.map((item, index) => (
+              <td key={index}>
+                {item.subject.name} {item.audience}
+              </td>
+            ))}
           </tr>
         </tbody>
       </table>
