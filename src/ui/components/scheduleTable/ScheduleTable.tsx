@@ -94,70 +94,66 @@ const ScheduleTable: FC = () => {
             "bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
           }
         >
-          <tr>
-            <td>{arrayNum[0]}</td>
-            {monday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[1]}</td>
-            {tuesday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[2]}</td>
-            {wednesday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[3]}</td>
-            {thursday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[4]}</td>
-            {friday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[5]}</td>
-            {saturday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[6]}</td>
-            {saturday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td>{arrayNum[7]}</td>
-            {saturday.map((item, index) => (
-              <td key={index}>
-                {item.subject.name} {item.audience}
-              </td>
-            ))}
-          </tr>
+          {arrayNum.map((item, index) => (
+            <tr key={index}>
+              <td>{item}</td>
+              {monday.map((lesson, index) => (
+                <td key={index}>
+                  {lesson.lessonNumber === item ? (
+                    <td>
+                      {lesson.subject.name} {lesson.audience}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
+                </td>
+              ))}
+              {tuesday.map((lesson, index) => (
+                <td key={index}>
+                  {lesson.lessonNumber === item ? (
+                    <td>
+                      {lesson.subject.name} {lesson.audience}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
+                </td>
+              ))}
+              {wednesday.map((lesson, index) => (
+                <td key={index}>
+                  {lesson.lessonNumber === item ? (
+                    <td>
+                      {lesson.subject.name} {lesson.audience}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
+                </td>
+              ))}
+              {thursday.map((lesson, index) => (
+                <td key={index}>
+                  {lesson.lessonNumber === item ? (
+                    <td>
+                      {lesson.subject.name} {lesson.audience}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
+                </td>
+              ))}{" "}
+              {friday.map((lesson, index) => (
+                <td key={index}>
+                  {lesson.lessonNumber === item ? (
+                    <td>
+                      {lesson.subject.name} {lesson.audience}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
