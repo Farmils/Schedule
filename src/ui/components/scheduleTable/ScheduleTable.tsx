@@ -1,10 +1,11 @@
 import { FC, useEffect } from "react";
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
-import { getSchedule } from "../../../core/api/login-api.ts";
+import { Schedule } from "../../../core/context/contextType.ts";
+import { GroupSelector } from "../groupSelector/GroupSelector.tsx";
 
 const ScheduleTable: FC = () => {
+  let lessons: Schedule[] = [];
   const {
-    setSchedule,
     schedule,
     monday,
     setMonday,
@@ -29,41 +30,45 @@ const ScheduleTable: FC = () => {
     "Пятница",
     "Суббота",
   ];
+
   const replaceMon = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 1);
     setMonday(arr);
     return arr;
   };
+
   const replaceTues = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 2);
     setTuesday(arr);
     return arr;
   };
+
   const replaceWen = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 3);
     setWednesday(arr);
     return arr;
   };
+
   const replaceThur = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 4);
     setThursday(arr);
     return arr;
   };
+
   const replaceFri = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 5);
     setFriday(arr);
     return arr;
   };
+
   const replaceSatur = () => {
     const arr = schedule.filter((value) => value.dayOfWeek === 6);
     setSaturday(arr);
     return arr;
   };
+
   useEffect(() => {
     (async () => {
-      const response = await getSchedule();
-      console.log(response.data);
-      setSchedule(response.data);
       replaceMon();
       replaceTues();
       replaceWen();
@@ -71,92 +76,77 @@ const ScheduleTable: FC = () => {
       replaceFri();
       replaceSatur();
     })();
-  }, [setSchedule]);
-  return (
-    <div className={"relative overflow-x-auto"}>
-      <table className={"w-4xl text-sm text-left rtl:text-right text-white"}>
-        <thead className={"bg-amber-400 "}>
-          <tr>
-            <td></td>
-            <td> {arrayStr[0]}</td>
-            <td> {arrayStr[1]}</td>
-            <td> {arrayStr[2]}</td>
-            <td> {arrayStr[3]}</td>
-            <td> {arrayStr[4]}</td>
-            <td> {arrayStr[5]}</td>
-            <td> {arrayStr[6]}</td>
-            <td> {arrayStr[7]}</td>
-          </tr>
-        </thead>
+  }, []);
 
-        <tbody
-          className={
-            "bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-          }
-        >
-          {arrayNum.map((item, index) => (
-            <tr key={index}>
-              <td>{item}</td>
-              {monday.map((lesson, index) => (
-                <td key={index}>
-                  {lesson.lessonNumber === item ? (
-                    <td>
-                      {lesson.subject.name} {lesson.audience}
-                    </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </td>
+  return (
+    <>
+      <GroupSelector />
+      {schedule === undefined ? (
+        <></>
+      ) : (
+        <div className={"relative overflow-x-auto"}>
+          <table className={"text-sm  text-black w-full  "}>
+            <thead className={"bg-black text-white"}>
+              <tr>
+                <th></th>
+                {arrayStr.map((day, index) => (
+                  <th key={index} className="px-4 py-2">
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className={"bg-white border-separate border "}>
+              {arrayNum.map((item, rowIndex) => (
+                <tr key={rowIndex}>
+                  <td className="px-4 py-2 border-separate border  border-black">
+                    {item}
+                  </td>
+                  {arrayStr.map((day, colIndex) => {
+                    if (day === "Понедельник") lessons = monday;
+                    if (day === "Вторник") lessons = tuesday;
+                    if (day === "Среда") lessons = wednesday;
+                    if (day === "Четверг") lessons = thursday;
+                    if (day === "Пятница") lessons = friday;
+                    if (day === "Суббота") lessons = saturday;
+
+                    return (
+                      <td
+                        key={colIndex}
+                        className="px-4 py-2 border-separate border  border-black "
+                      >
+                        {lessons.find(
+                          (lesson: Schedule) => lesson.lessonNumber === item,
+                        ) ? (
+                          <td className={"text-sm font-bold"}>
+                            {
+                              lessons.find(
+                                (lesson: Schedule) =>
+                                  lesson.lessonNumber === item,
+                              )?.subject.name
+                            }
+
+                            {
+                              lessons.find(
+                                (lesson: Schedule) =>
+                                  lesson.lessonNumber === item,
+                              )?.audience
+                            }
+                          </td>
+                        ) : (
+                          <></>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
               ))}
-              {tuesday.map((lesson, index) => (
-                <td key={index}>
-                  {lesson.lessonNumber === item ? (
-                    <td>
-                      {lesson.subject.name} {lesson.audience}
-                    </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </td>
-              ))}
-              {wednesday.map((lesson, index) => (
-                <td key={index}>
-                  {lesson.lessonNumber === item ? (
-                    <td>
-                      {lesson.subject.name} {lesson.audience}
-                    </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </td>
-              ))}
-              {thursday.map((lesson, index) => (
-                <td key={index}>
-                  {lesson.lessonNumber === item ? (
-                    <td>
-                      {lesson.subject.name} {lesson.audience}
-                    </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </td>
-              ))}{" "}
-              {friday.map((lesson, index) => (
-                <td key={index}>
-                  {lesson.lessonNumber === item ? (
-                    <td>
-                      {lesson.subject.name} {lesson.audience}
-                    </td>
-                  ) : (
-                    <td></td>
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </>
   );
 };
+
 export { ScheduleTable };
