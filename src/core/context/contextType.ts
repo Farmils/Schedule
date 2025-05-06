@@ -3,7 +3,7 @@ type ContextType = {
   setProfile: (profile: ProfileData) => void;
   num: number;
   setNum: (num: number) => void;
-  schedule: ISchedule;
+  schedule: Schedule[];
   fetchSchedule(groupID: number): Promise<void>;
 };
 export enum DayOfWeek {
@@ -14,7 +14,6 @@ export enum DayOfWeek {
   "Пятница" = 5,
   "Суббота" = 6,
 }
-type ISchedule = { [x: number]: Array<Omit<Schedule, "dayOfWeek">> };
 type Token = {
   token: string;
 };
@@ -47,11 +46,14 @@ type Role = {
   name: string;
 };
 type Schedule = {
+  dayOfWeek: DayOfWeek;
+  subjects: Subjects[];
+};
+type Subjects = {
   id: number;
   lessonNumber: number;
   audience: string;
   subject: Subject;
-  dayOfWeek: DayOfWeek;
 };
 type Subject = {
   id: number;
@@ -59,7 +61,6 @@ type Subject = {
 };
 export type {
   Role,
-  ISchedule,
   ContextType,
   Group,
   ProfileData,
