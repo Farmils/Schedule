@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Header } from "../../components/header/Header.tsx";
-import { ScheduleTable } from "../../components/scheduleTable/ScheduleTable.tsx";
+import { GroupSelector } from "../../components/groupSelector/GroupSelector.tsx";
 
 const SchedulePage: FC = () => {
   return (
     <>
       <Header />
-      <ScheduleTable />
+      <GroupSelector />
     </>
   );
 };
