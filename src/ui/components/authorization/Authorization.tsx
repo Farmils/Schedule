@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetGlobalContext } from "../../../core/context/Context";
 import { AuthData } from "../../../core/api/types";
-import { loginApi } from "../../../core/api/login-api";
+import { apiRequest } from "../../../core/api/apiRequest.ts";
 
 const Authorization: FC = () => {
   const { setProfile } = useGetGlobalContext();
@@ -19,7 +19,7 @@ const Authorization: FC = () => {
     };
 
     try {
-      const response = await loginApi(authData);
+      const response = await apiRequest(authData);
       console.log(response.data);
       setProfile(response.data);
       nav("/schedule");

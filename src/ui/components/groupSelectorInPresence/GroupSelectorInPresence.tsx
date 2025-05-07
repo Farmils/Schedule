@@ -1,19 +1,19 @@
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
-import { ScheduleTable } from "../scheduleTable/ScheduleTable.tsx";
+import { PresenceTable } from "../presenceTable/PresenceTable.tsx";
 
-const GroupSelector: FC = () => {
+const GroupSelectorInPresence: FC = () => {
   const [groupId, setGroupId] = useState<number | undefined>();
-  const { fetchSchedule, setNum } = useGetGlobalContext();
+  const { fetchStudents, setNum } = useGetGlobalContext();
 
   const groupSelectHandler = useCallback(
     async (e: ChangeEvent<HTMLSelectElement>) => {
       const selectedValue = +e.target.value;
       setGroupId(selectedValue);
-      await fetchSchedule(selectedValue);
+      await fetchStudents(+e.target.value);
       setNum(selectedValue);
     },
-    [fetchSchedule],
+    [fetchStudents],
   );
 
   return (
@@ -37,9 +37,9 @@ const GroupSelector: FC = () => {
           <option value={4}>4</option>
         </select>
       </div>
-      <ScheduleTable />
+      <PresenceTable />
     </div>
   );
 };
 
-export { GroupSelector };
+export { GroupSelectorInPresence };

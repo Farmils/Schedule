@@ -23,6 +23,13 @@ const Header: FC = () => {
       >
         Расписание
       </Link>
+      <Link
+        to={"/presence"}
+        className={" text-xl"}
+        style={{ color: "#2C2C2C" }}
+      >
+        Посещаемость
+      </Link>
       <button onClick={exit}>Выйти</button>
     </div>
   );

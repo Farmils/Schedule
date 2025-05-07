@@ -5,6 +5,16 @@ type ContextType = {
   setNum: (num: number) => void;
   schedule: Schedule[];
   fetchSchedule(groupID: number): Promise<void>;
+  students: Students[];
+  fetchStudents(groupID: number): Promise<void>;
+};
+type Students = {
+  studentId: number;
+  uuid: string;
+  email: string;
+  number: string;
+  fio: string;
+  enrollDate: string;
 };
 export enum DayOfWeek {
   "Понедельник" = 1,
@@ -69,4 +79,5 @@ export type {
   Token,
   UserData,
   Schedule,
+  Students,
 };

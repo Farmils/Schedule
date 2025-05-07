@@ -1,22 +1,17 @@
-import { useEffect } from "react";
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
 import { DayOfWeek } from "../../../core/context/contextType.ts";
+import { useEffect } from "react";
+// import {useEffect} from "react";
 
 const ScheduleTable = () => {
-  const { schedule, fetchSchedule } = useGetGlobalContext();
-  // const arrayNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
-  useEffect(() => {
-    (async () => {
-      await fetchSchedule(1);
-    })();
-  }, [fetchSchedule]);
+  const { schedule } = useGetGlobalContext();
 
   useEffect(() => {
     console.log(schedule);
   }, [schedule]);
 
-  if (schedule.length === 0) {
-    return <></>;
+  if (!schedule || schedule.length === 0) {
+    return <div></div>;
   }
 
   return (
@@ -34,9 +29,16 @@ const ScheduleTable = () => {
               <td className="px-4 py-2 border-separate border  border-black">
                 {rowIndex + 1}
               </td>
-              {Array.from({ length: 6 }).map((_, cellIdx) => {
-                if (!schedule[cellIdx].subjects[rowIndex]) return;
-
+              {schedule.map((element, cellIdx) => {
+                const subject = element.subjects?.[rowIndex];
+                if (!subject) {
+                  return (
+                    <td
+                      key={cellIdx}
+                      className="px-4 py-2 border-separate border border-black"
+                    ></td>
+                  );
+                }
                 return (
                   <td
                     className="px-4 py-2 border-separate border  border-black"
