@@ -7,6 +7,22 @@ type ContextType = {
   fetchSchedule(groupID: number): Promise<void>;
   students: Students[];
   fetchStudents(groupID: number): Promise<void>;
+  presences: Presence[];
+  fetchPresence(groupID: number): Promise<void>;
+};
+type Presence = {
+  presenceDate: string;
+  subjects: PresenceSubjects[];
+};
+type PresenceSubjects = {
+  dayOfWeek: DayOfWeek;
+  presenceRow: PresenceRow[];
+};
+type PresenceRow = {
+  presenceId: number;
+  schedule: Subjects;
+  attendanceTypeId: AttendanceType;
+  studentId: number;
 };
 type Students = {
   studentId: number;
@@ -16,6 +32,12 @@ type Students = {
   fio: string;
   enrollDate: string;
 };
+export enum AttendanceType {
+  "Болезнь" = 1,
+  "Соревнования" = 2,
+  "Отсутствует" = 3,
+  "Присутствует" = 4,
+}
 export enum DayOfWeek {
   "Понедельник" = 1,
   "Вторник" = 2,
@@ -70,6 +92,7 @@ type Subject = {
   name: string;
 };
 export type {
+  Presence,
   Role,
   ContextType,
   Group,

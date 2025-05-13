@@ -6,8 +6,14 @@ import {
   useContext,
   useState,
 } from "react";
-import { ContextType, ProfileData, Schedule, Students } from "./contextType.ts";
-import { getSchedule, getStudents } from "../api/apiRequest.ts";
+import {
+  ContextType,
+  Presence,
+  ProfileData,
+  Schedule,
+  Students,
+} from "./contextType.ts";
+import { getPresence, getSchedule, getStudents } from "../api/apiRequest.ts";
 
 const Context = createContext<ContextType>({} as ContextType);
 const useGetGlobalContext = () => useContext(Context);
@@ -16,6 +22,7 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [students, setStudents] = useState<Students[]>([]);
   const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [num, setNum] = useState(1);
+  const [presences, setPresences] = useState<Presence[]>([]);
 
   const fetchSchedule = useCallback(async (groupID: number) => {
     const { data } = await getSchedule(groupID);
@@ -30,6 +37,10 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const { data } = await getStudents(groupID);
     setStudents(data);
   }, []);
+  const fetchPresence = useCallback(async (groupID: number) => {
+    const { data } = await getPresence(groupID);
+    setPresences(data);
+  }, []);
 
   const values: ContextType = {
     profile: profile!,
@@ -40,6 +51,8 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setNum,
     students,
     fetchStudents,
+    presences,
+    fetchPresence,
   };
 
   return <Context.Provider value={values}>{children}</Context.Provider>;

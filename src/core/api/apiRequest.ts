@@ -1,6 +1,11 @@
 import { AxiosResponse } from "axios";
 import { instance } from ".";
-import { ProfileData, Schedule, Students } from "../context/contextType";
+import {
+  Presence,
+  ProfileData,
+  Schedule,
+  Students,
+} from "../context/contextType";
 import { AuthData } from "./types";
 
 const apiRequest = async (data: AuthData) => {
@@ -16,6 +21,6 @@ const getStudents = async (groupNum: number) => {
   return await instance.get<Students[]>(`api/v1/group/${groupNum}/students`);
 };
 const getPresence = async (groupNum: number) => {
-  return await instance.get(`api/v1/group/${groupNum}/presence`);
+  return await instance.get<Presence[]>(`api/v1/group/${groupNum}/presence`);
 };
 export { apiRequest, getSchedule, getStudents, getPresence };
