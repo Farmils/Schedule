@@ -33,10 +33,10 @@ type Students = {
   enrollDate: string;
 };
 export enum AttendanceType {
-  "Болезнь" = 1,
-  "Соревнования" = 2,
-  "Отсутствует" = 3,
-  "Присутствует" = 4,
+  "Б" = 1,
+  "С" = 2,
+  "О" = 3,
+  "П" = 4,
 }
 export enum DayOfWeek {
   "Понедельник" = 1,

@@ -39,7 +39,10 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
   const fetchPresence = useCallback(async (groupID: number) => {
     const { data } = await getPresence(groupID);
-    setPresences(data);
+    const sortData = data.sort((a, b) =>
+      a.presenceDate.localeCompare(b.presenceDate),
+    );
+    setPresences(sortData);
   }, []);
 
   const values: ContextType = {

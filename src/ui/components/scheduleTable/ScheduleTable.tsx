@@ -1,14 +1,8 @@
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
 import { DayOfWeek } from "../../../core/context/contextType.ts";
-import { useEffect } from "react";
-// import {useEffect} from "react";
 
 const ScheduleTable = () => {
   const { schedule } = useGetGlobalContext();
-
-  useEffect(() => {
-    console.log(schedule);
-  }, [schedule]);
 
   if (!schedule || schedule.length === 0) {
     return <div></div>;

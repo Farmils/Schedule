@@ -1,77 +1,90 @@
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
-import { useEffect } from "react";
 import { AttendanceType } from "../../../core/context/contextType.ts";
+import { useEffect } from "react";
 
 const PresenceTable = () => {
   const { students, presences } = useGetGlobalContext();
 
   useEffect(() => {
-    console.log(students);
     console.log(presences);
-  }, [students]);
+  }, []);
+
   if (students.length === 0) return <></>;
+
   return (
     <div className={"relative overflow-x-auto"}>
-      <table className={"text-sm  text-black w-full  "}>
-        <thead className={"bg-black text-white  "}>
+      <table className={"text-sm text-black w-full"}>
+        <thead
+          className={"text-black w-full border border-separate border-black"}
+        >
           <tr>
-            <td>№</td>
-            <td>ФИО Обучающегося</td>
-
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th className={"border-black border-2 border-collapse"}>№</th>
+            <th className={"border-black border-2 border-separate"}>
+              ФИО Обучающегося
+            </th>
+            {presences.map((presence, index) => (
+              <th
+                key={index}
+                colSpan={8}
+                className={"border-black border-2 border-separate"}
+              >
+                {new Date(presence.presenceDate).toLocaleDateString()}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody
-          className={
-            "bg-white border-separate border  border-black text-center"
-          }
+          className={"bg-white border-separate border border-black text-center"}
         >
-          {presences.map((item, index) => (
-            <td key={index} className={"border border-separate border-black"}>
-              {new Date(item.presenceDate).toLocaleDateString()}
-              <td></td>
-              <td></td>
-
-              {Array.from({ length: 8 }).map((_, rowIndex) => (
-                <td className={" px-1.5 border border-separate border-black"}>
-                  {" "}
-                  {rowIndex + 1}
-                </td>
-              ))}
-
-              {students.map((item, studentIndex) => (
-                <tr>
-                  <td
-                    key={studentIndex}
-                    className={"border border-separate border-black"}
-                  >
-                    {studentIndex + 1}
-                  </td>
-                  <td className={"border border-separate border-black"}>
-                    {item.fio}
-                  </td>
-                  {presences.map((item, presenceIndex) => {
-                    const presence = item.subjects[index];
-                    if (!presence) {
-                      return <td></td>;
-                    }
-                    return (
-                      <td>
-                        {
-                          item.subjects[index].presenceRow[index].schedule
-                            .subject.name
-                        }
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </td>
+          <tr>
+            <th className={"border-black border-2 border-collapse"}></th>
+            <th className={"border-black border-2 border-collapse"}></th>
+            {presences.map((_, index) =>
+              Array.from({ length: 8 }).map((_, colIdx) => (
+                <th
+                  key={`${index}-${colIdx}`}
+                  className={"border-black border-2 border-separate"}
+                >
+                  {colIdx + 1}
+                </th>
+              )),
+            )}
+          </tr>
+          {students.map((student, studentIndex) => (
+            <tr
+              key={studentIndex}
+              className={"border-separate border border-black text-center"}
+            >
+              <td className={"border-separate border border-black text-center"}>
+                {studentIndex + 1}
+              </td>
+              <td className={"border-separate border border-black text-center"}>
+                {student.fio}
+              </td>
+              {presences.map((presence) =>
+                Array.from({ length: 8 }).map((_, colIdx) => {
+                  const attendance = presence.subjects.flatMap((subject) =>
+                    subject.presenceRow.filter(
+                      (row) =>
+                        row.schedule.lessonNumber === colIdx + 1 &&
+                        row.studentId === student.studentId,
+                    ),
+                  );
+                  return (
+                    <td
+                      key={`${studentIndex}-${colIdx}`}
+                      className={
+                        "border-separate border border-black text-center"
+                      }
+                    >
+                      {attendance.length > 0
+                        ? AttendanceType[attendance[0].attendanceTypeId]
+                        : ""}
+                    </td>
+                  );
+                }),
+              )}
+            </tr>
           ))}
         </tbody>
       </table>
