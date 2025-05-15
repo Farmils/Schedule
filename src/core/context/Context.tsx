@@ -13,7 +13,7 @@ import {
   Schedule,
   Students,
 } from "./contextType.ts";
-import { getPresence, getSchedule, getStudents } from "../api/apiRequest.ts";
+import { getPresence, getSchedule, getStudents } from "../api/apiRequest.tsx";
 
 const Context = createContext<ContextType>({} as ContextType);
 const useGetGlobalContext = () => useContext(Context);

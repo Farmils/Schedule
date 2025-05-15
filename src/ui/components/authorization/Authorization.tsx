@@ -1,10 +1,9 @@
-import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetGlobalContext } from "../../../core/context/Context";
 import { AuthData } from "../../../core/api/types";
-import { apiRequest } from "../../../core/api/apiRequest.ts";
+import { apiRequest } from "../../../core/api/apiRequest.tsx";
 
-const Authorization: FC = () => {
+const Authorization = () => {
   const { setProfile } = useGetGlobalContext();
   const nav = useNavigate();
 
@@ -17,17 +16,15 @@ const Authorization: FC = () => {
       login: login,
       password: password,
     };
-
     try {
       const response = await apiRequest(authData);
-      console.log(response.data);
       setProfile(response.data);
       nav("/schedule");
     } catch (e) {
       console.log(e);
-      alert(`Неверный логин или пароль`);
     }
   };
+
   return (
     <div className={"flex flex-col items-center m-5"}>
       <p className={"text-black-800 text-2xl font-medium "}>Авторизация</p>
@@ -36,7 +33,7 @@ const Authorization: FC = () => {
           <label>Логин</label>
           <input
             type={"text"}
-            className={"bg-gray-100 border broder gray-300 rounded-lg"}
+            className={"bg-gray-100 border broder gray-300 rounded-lg "}
             placeholder={"логин"}
           />
         </div>
