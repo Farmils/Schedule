@@ -1,6 +1,7 @@
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
 import { AttendanceType } from "../../../core/context/contextType.ts";
 import { useEffect } from "react";
+import * as XLSX from "xlsx";
 
 const PresenceTable = () => {
   const { students, presences } = useGetGlobalContext();
@@ -11,84 +12,116 @@ const PresenceTable = () => {
 
   if (students.length === 0) return <></>;
 
+  const exportToExcel = () => {
+    const wsData = [];
+
+    const headers = ["№", "ФИО Обучающегося"];
+    presences.forEach((presence) => {
+      Array.from({ length: 8 }).forEach(() => {
+        headers.push(new Date(presence.presenceDate).toLocaleDateString());
+      });
+    });
+    wsData.push(headers);
+
+    const subHeaders = ["", ""];
+    presences.forEach(() => {
+      Array.from({ length: 8 }).forEach((_, colIdx) => {
+        subHeaders.push((colIdx + 1).toString());
+      });
+    });
+    wsData.push(subHeaders);
+
+    students.forEach((student, studentIndex) => {
+      const row = [studentIndex + 1, student.fio];
+      presences.forEach((presence) => {
+        Array.from({ length: 8 }).forEach((_, colIdx) => {
+          const attendance = presence.subjects.flatMap((subject) =>
+              subject.presenceRow.filter(
+                  (row) =>
+                      row.schedule.lessonNumber === colIdx + 1 &&
+                      row.studentId === student.studentId,
+              ),
+          );
+          row.push(attendance.length > 0 ? AttendanceType[attendance[0].attendanceTypeId] : "");
+        });
+      });
+      wsData.push(row);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    const startCol = 2;
+    presences.forEach((_, index) => {
+      ws["!merges"] = ws["!merges"] || [];
+      ws["!merges"].push({
+        s: { r: 0, c: startCol + index * 8 },
+        e: { r: 0, c: startCol + index * 8 + 7 }
+      });
+    });
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Посещамость");
+    XLSX.writeFile(wb, `Посещаемость Группы .xlsx`);
+  };
+
   return (
-    <div className={"relative overflow-x-auto"}>
-      <table className={"text-sm text-black w-full"}>
-        <thead
-          className={"text-black w-full border border-separate border-black"}
-        >
+      <div className={"relative overflow-x-auto"}>
+        <button onClick={exportToExcel} className={"mb-4 p-1 bg-black ml-1 text-white rounded"}>
+          Экспортировать в Excel
+        </button>
+        <table className={"text-sm text-black w-full"}>
+          <thead className={"text-black w-full border border-separate border-black"}>
           <tr>
             <th className={"border-black border-2 border-collapse"}>№</th>
-            <th className={"border-black border-2 border-separate"}>
-              ФИО Обучающегося
-            </th>
+            <th className={"border-black border-2 border-separate"}>ФИО Обучающегося</th>
             {presences.map((presence, index) => (
-              <th
-                key={index}
-                colSpan={8}
-                className={"border-black border-2 border-separate"}
-              >
-                {new Date(presence.presenceDate).toLocaleDateString()}
-              </th>
+                <th key={index} colSpan={8} className={"border-black border-2 border-separate"}>
+                  {new Date(presence.presenceDate).toLocaleDateString()}
+                </th>
             ))}
           </tr>
-        </thead>
-        <tbody
-          className={"bg-white border-separate border border-black text-center"}
-        >
           <tr>
             <th className={"border-black border-2 border-collapse"}></th>
             <th className={"border-black border-2 border-collapse"}></th>
             {presences.map((_, index) =>
-              Array.from({ length: 8 }).map((_, colIdx) => (
-                <th
-                  key={`${index}-${colIdx}`}
-                  className={"border-black border-2 border-separate"}
-                >
-                  {colIdx + 1}
-                </th>
-              )),
+                Array.from({ length: 8 }).map((_, colIdx) => (
+                    <th key={`${index}-${colIdx}`} className={"border-black border-2 border-separate"}>
+                      {colIdx + 1}
+                    </th>
+                )),
             )}
           </tr>
+          </thead>
+          <tbody className={"bg-white border-separate border border-black text-center overflow-x-auto"}>
           {students.map((student, studentIndex) => (
-            <tr
-              key={studentIndex}
-              className={"border-separate border border-black text-center"}
-            >
-              <td className={"border-separate border border-black text-center"}>
-                {studentIndex + 1}
-              </td>
-              <td className={"border-separate border border-black text-center"}>
-                {student.fio}
-              </td>
-              {presences.map((presence) =>
-                Array.from({ length: 8 }).map((_, colIdx) => {
-                  const attendance = presence.subjects.flatMap((subject) =>
-                    subject.presenceRow.filter(
-                      (row) =>
-                        row.schedule.lessonNumber === colIdx + 1 &&
-                        row.studentId === student.studentId,
-                    ),
-                  );
-                  return (
-                    <td
-                      key={`${studentIndex}-${colIdx}`}
-                      className={
-                        "border-separate border border-black text-center"
-                      }
-                    >
-                      {attendance.length > 0
-                        ? AttendanceType[attendance[0].attendanceTypeId]
-                        : ""}
-                    </td>
-                  );
-                }),
-              )}
-            </tr>
+              <tr key={studentIndex} className={"border-separate border border-black text-center"}>
+                <td className={"border-separate border border-black text-center"}>
+                  {studentIndex + 1}
+                </td>
+                <td className={"border-separate border border-black text-center"}>
+                  {student.fio}
+                </td>
+                {presences.map((presence) =>
+                    Array.from({ length: 8 }).map((_, colIdx) => {
+                      const attendance = presence.subjects.flatMap((subject) =>
+                          subject.presenceRow.filter(
+                              (row) =>
+                                  row.schedule.lessonNumber === colIdx + 1 &&
+                                  row.studentId === student.studentId,
+                          ),
+                      );
+                      return (
+                          <td key={`${studentIndex}-${colIdx}`} className={"border-separate border border-black text-center"}>
+                            {attendance.length > 0 ? AttendanceType[attendance[0].attendanceTypeId] : ""}
+                          </td>
+                      );
+                    }),
+                )}
+              </tr>
           ))}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
   );
 };
 
