@@ -106,43 +106,45 @@ const PresenceTable = () => {
 
 
   return (
-      <div className={"relative overflow-x-auto"}>
-        <button onClick={exportToExcelReport} className={"mb-4 p-1 bg-black ml-1 text-white rounded"}>
+      <div className="relative overflow-x-auto">
+        <button onClick={exportToExcelReport} className="mb-4 p-2 bg-black ml-1 text-white rounded">
           Экспортировать в Excel в форме отчёта
         </button>
-        <button onClick={exportToExcel} className={"mb-4 p-1 bg-black ml-1 text-white rounded"}>
+        <button onClick={exportToExcel} className="mb-4 p-2 bg-black ml-1 text-white rounded">
           Экспортировать в Excel
         </button>
-        <table className={"text-sm text-black w-full"}>
-          <thead className={"text-black w-full border border-separate border-black"}>
+        <table className="text-sm text-black w-full">
+          <thead className="text-black w-full border border-separate border-black">
           <tr>
-            <th className={"border-black border-2 border-collapse"}>№</th>
-            <th className={"border-black border-2 border-separate"}>ФИО Обучающегося</th>
+            <th className="border-black bg-white border-2 border-collapse sticky left-0 z-10 ">№</th>
+            <th className="border-black bg-white  border-2 border-separate sticky left-[17px] z-10 ">ФИО
+              Обучающегося
+            </th>
             {presences.map((presence, index) => (
-                <th key={index} colSpan={8} className={"border-black border-2 border-separate"}>
+                <th key={index} colSpan={8} className="border-black border-2 border-separate ">
                   {new Date(presence.presenceDate).toLocaleDateString()}
                 </th>
             ))}
           </tr>
           <tr>
-            <th className={"border-black border-2 border-collapse"}></th>
-            <th className={"border-black border-2 border-collapse"}></th>
+            <th className="border-black border-2 border-collapse"></th>
+            <th className="border-black border-2 border-collapse"></th>
             {presences.map((_, index) =>
                 Array.from({length: 8}).map((_, colIdx) => (
-                    <th key={`${index}-${colIdx}`} className={"border-black border-2 border-separate"}>
+                    <th key={`${index}-${colIdx}`} className="border-black border-2 border-separate ">
                       {colIdx + 1}
                     </th>
                 )),
             )}
           </tr>
           </thead>
-          <tbody className={"bg-white border-separate border border-black text-center overflow-x-auto"}>
+          <tbody className="bg-white border-separate border border-black text-center overflow-x-auto">
           {students.map((student, studentIndex) => (
-              <tr key={studentIndex} className={"border-separate border border-black text-center"}>
-                <td className={"border-separate border border-black text-center"}>
+              <tr key={studentIndex} className="border-separate border border-black text-center">
+                <td className="border-separate bg-white border border-black text-center sticky left-0 z-10 ">
                   {studentIndex + 1}
                 </td>
-                <td className={"border-separate border border-black text-center"}>
+                <td className="border-separate bg-white border border-black text-center sticky left-[15px] z-10 ">
                   {student.fio}
                 </td>
                 {presences.map((presence) =>
@@ -156,7 +158,7 @@ const PresenceTable = () => {
                       );
                       return (
                           <td key={`${studentIndex}-${colIdx}`}
-                              className={"border-separate border border-black text-center"}>
+                              className="border-separate border border-black text-center">
                             {attendance.length > 0 ? AttendanceType[attendance[0].attendanceTypeId] : ""}
                           </td>
                       );
