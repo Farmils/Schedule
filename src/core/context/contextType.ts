@@ -32,11 +32,10 @@ type Students = {
   fio: string;
   enrollDate: string;
 };
-export enum AttendanceType {
-  "Б" = 1,
-  "С" = 2,
-  "О" = 3,
-  "П" = 4,
+type AttendanceType ={
+ id:number;
+ name: string;
+ isGoodReason:boolean;
 }
 export enum DayOfWeek {
   "Понедельник" = 1,

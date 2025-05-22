@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {Button} from "@/lib/ui/button.tsx";
 
 const Header: FC = () => {
   const nav = useNavigate();
@@ -28,7 +29,7 @@ const Header: FC = () => {
       >
         Посещаемость
       </Link>
-      <button onClick={exit}>Выйти</button>
+      <Button variant="outline" onClick={exit}>Выйти</Button>
     </div>
   );
 };

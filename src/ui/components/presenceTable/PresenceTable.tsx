@@ -1,15 +1,15 @@
 import { useGetGlobalContext } from "../../../core/context/Context.tsx";
-import { AttendanceType } from "../../../core/context/contextType.ts";
-import { useEffect } from "react";
+import {FC, useEffect} from "react";
 import * as XLSX from "xlsx";
 import { WorkBook } from "xlsx";
 
-const PresenceTable = () => {
+const PresenceTable: FC = () => {
   const { students, presences } = useGetGlobalContext();
 
   useEffect(() => {
     console.log(presences);
   }, []);
+
 
   if (students.length === 0) return <></>;
 
@@ -31,11 +31,11 @@ const PresenceTable = () => {
         presence.subjects.forEach((subject) => {
           subject.presenceRow.forEach((presenceRow) => {
             if (presenceRow.studentId === student.studentId) {
-              if (presenceRow.attendanceTypeId === 1) {
+              if (presenceRow.attendanceTypeId.name === "болезнь") {
                 illness++;
-              } else if (presenceRow.attendanceTypeId === 2) {
+              } else if (presenceRow.attendanceTypeId.name === "соревнования") {
                 application++;
-              } else if (presenceRow.attendanceTypeId === 3) {
+              } else if (presenceRow.attendanceTypeId.name === "отсутсвует") {
                 invalidExcused++;
               }
             }
@@ -82,7 +82,7 @@ const PresenceTable = () => {
                       row.studentId === student.studentId,
               ),
           );
-          row.push(attendance.length > 0 ? AttendanceType[attendance[0].attendanceTypeId] : "");
+          row.push(attendance.length > 0 ? attendance[0].attendanceTypeId.name : "");
         });
       });
       wsData.push(row);
@@ -147,23 +147,23 @@ const PresenceTable = () => {
                 <td className="border-separate bg-white border border-black text-center sticky left-[15px] z-10 ">
                   {student.fio}
                 </td>
-                {presences.map((presence) =>
-                    Array.from({length: 8}).map((_, colIdx) => {
-                      const attendance = presence.subjects.flatMap((subject) =>
-                          subject.presenceRow.filter(
-                              (row) =>
-                                  row.schedule.lessonNumber === colIdx + 1 &&
-                                  row.studentId === student.studentId,
-                          ),
-                      );
-                      return (
-                          <td key={`${studentIndex}-${colIdx}`}
-                              className="border-separate border border-black text-center">
-                            {attendance.length > 0 ? AttendanceType[attendance[0].attendanceTypeId] : ""}
-                          </td>
-                      );
-                    }),
-                )}
+                {/*{presences.map((presence) =>*/}
+                {/*    Array.from({length: 8}).map((_, colIdx) => {*/}
+                {/*      const attendance = presence.subjects.flatMap((subject) =>*/}
+                {/*          subject.presenceRow.filter(*/}
+                {/*              (row) =>*/}
+                {/*                  row.schedule.lessonNumber === colIdx + 1 &&*/}
+                {/*                  row.studentId === student.studentId,*/}
+                {/*          ),*/}
+                {/*      );*/}
+                {/*      return (*/}
+                {/*          <td key={`${studentIndex}-${colIdx}`}*/}
+                {/*              className="border-separate border border-black text-center">*/}
+                {/*            {attendance.length > 0 ? attendance[0].attendanceTypeId.name : ""}*/}
+                {/*          </td>*/}
+                {/*      );*/}
+                {/*    }),*/}
+                {/*)}*/}
               </tr>
           ))}
           </tbody>
