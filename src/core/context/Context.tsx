@@ -10,10 +10,10 @@ import {
   ContextType,
   Presence,
   ProfileData,
-  Schedule,
+  Schedule, Statistic,
   Students,
 } from "./contextType.ts";
-import { getPresence, getSchedule, getStudents } from "../api/apiRequest.tsx";
+import {getPresence, getSchedule, getStatistic, getStudents} from "../api/apiRequest.tsx";
 
 const Context = createContext<ContextType>({} as ContextType);
 const useGetGlobalContext = () => useContext(Context);
@@ -23,6 +23,7 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [num, setNum] = useState(1);
   const [presences, setPresences] = useState<Presence[]>([]);
+  const [statistic,setStatistic] = useState<Statistic[]>([])
 
   const fetchSchedule = useCallback(async (groupID: number) => {
     const { data } = await getSchedule(groupID);
@@ -44,6 +45,11 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     );
     setPresences(sortData);
   }, []);
+  const fetchStatistic = useCallback(async (groupID: number) => {
+    const { data } = await getStatistic(groupID);
+    setStatistic(data);
+  }, []);
+
 
   const values: ContextType = {
     profile: profile!,
@@ -56,8 +62,12 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     fetchStudents,
     presences,
     fetchPresence,
+    statistic,
+    fetchStatistic
+    }
+  return <Context.Provider value={values}>{children}</Context.Provider>;
   };
 
-  return <Context.Provider value={values}>{children}</Context.Provider>;
-};
+
+
 export { Context, ContextProvider, useGetGlobalContext };

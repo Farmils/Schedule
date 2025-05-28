@@ -3,7 +3,7 @@ import { instance } from ".";
 import {
   Presence,
   ProfileData,
-  Schedule,
+  Schedule, Statistic,
   Students,
 } from "../context/contextType";
 import { AuthData } from "./types";
@@ -28,4 +28,7 @@ const getPresence = async (groupNum: number) => {
     .get<Presence[]>(`api/v1/group/${groupNum}/presence`)
 
 };
-export { apiRequest, getSchedule, getStudents, getPresence };
+const getStatistic = async (groupNum: number) => {
+  return await instance.get<Statistic[]>(`api/v1/group/${groupNum}/statistic`)
+}
+export { apiRequest, getSchedule, getStudents, getPresence,getStatistic };

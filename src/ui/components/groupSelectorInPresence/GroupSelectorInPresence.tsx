@@ -4,7 +4,7 @@ import { PresenceTable } from "../presenceTable/PresenceTable.tsx";
 
 const GroupSelectorInPresence: FC = () => {
   const [groupId, setGroupId] = useState<number | undefined>();
-  const { fetchStudents, setNum, fetchPresence } = useGetGlobalContext();
+  const { fetchStudents, setNum, fetchPresence,fetchStatistic } = useGetGlobalContext();
 
   const groupSelectHandler = useCallback(
     async (e: ChangeEvent<HTMLSelectElement>) => {
@@ -12,6 +12,7 @@ const GroupSelectorInPresence: FC = () => {
       setGroupId(selectedValue);
       await fetchStudents(+e.target.value);
       await fetchPresence(+e.target.value);
+      await fetchStatistic(+e.target.value);
       setNum(selectedValue);
     },
     [fetchStudents],

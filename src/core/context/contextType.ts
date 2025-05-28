@@ -9,7 +9,16 @@ type ContextType = {
   fetchStudents(groupID: number): Promise<void>;
   presences: Presence[];
   fetchPresence(groupID: number): Promise<void>;
+  statistic:Statistic[];
+  fetchStatistic(groupID: number): Promise<void>;
+
 };
+type Statistic={
+  studentId:number;
+  missedTotal:number;
+  missedByGoodReason:number;
+  missedByBadReason:number;
+}
 type Presence = {
   presenceDate: string;
   subjects: PresenceSubjects[];
@@ -21,7 +30,7 @@ type PresenceSubjects = {
 type PresenceRow = {
   presenceId: number;
   schedule: Subjects;
-  attendanceTypeId: AttendanceType;
+  attendanceType: AttendanceType;
   studentId: number;
 };
 type Students = {
@@ -102,4 +111,5 @@ export type {
   UserData,
   Schedule,
   Students,
+  Statistic
 };
